@@ -4,70 +4,76 @@
 #define __QUEUE_H__
 
 #include <stdbool.h>
-#include <stdlib.h>
-
 #include "path.h"
 
 /* List-backed Queue consists of nodes, each of which has a reference to a
  * solution (path), as well as the next node inthe queue.
  */
 typedef struct node {
-  list_t * solution;
-  struct node * next;
+    list_t * solution;
+    struct node * next;
 } node_t;
 
 /* Queue structure contains references to the front and rear nodes for easy
  * insertion at the end and deletion from the front */
 typedef struct queue {
-  node_t * head;
-  node_t * tail;
+    node_t * head;
+    node_t * tail;
 } queue_t;
 
 /* Initialize a queue data structure */
 void queue_initialize(queue_t * queue){
-  queue->head = NULL;
-  queue->tail = NULL;
+    while (queue->head)
+    {
+        node_t *temp = queue->head;
+        queue->head = queue->head->next;
+        free(temp);
+    }
+    queue->tail = NULL;
 }
 
 /* Determine whether a queue is empty */
 bool queue_empty (const queue_t * queue){
-  return queue->head == NULL;
+    return queue->head == NULL;
 }
 
 /* Insert a solution at the end of a queue */
 bool enqueue (queue_t * queue, list_t* path){
-  node_t *newnode = (node_t*)malloc(sizeof(node_t));
-  newnode->solution->position = path->position;
-  newnode->next = NULL;
-  if(queue->head == NULL && queue->tail == NULL){
-      queue->head = newnode;
-      queue->tail = newnode;
-  }else{
-      queue->tail->next = newnode;
-      queue->tail = newnode;
-  }
-  return true;
+    node_t *newnode = (node_t*)malloc(sizeof(node_t));
+    if (newnode == NULL){
+        fprintf(stderr, "Error: unable to allocate required memory\n");
+        return false;
+    }
+    newnode->solution = path;
+    newnode->next = NULL;
+    if(queue_empty(queue)){
+        queue->head = newnode;
+    }else{
+        queue->tail->next = newnode;
+    }
+    queue->tail = newnode;
+    return true;
 }
 
 /* Remove and return the item at the front of the queue */
 list_t * dequeue (queue_t * queue){
-  //check if the queue is empty
-  if(queue->head==NULL)
-      return NULL;
-
-  list_t *result = queue->head->solution;
-  node_t *temp = queue->head;
-  queue->head = queue->head->next;
-  if(queue->head==NULL){
-      queue->tail = NULL;
-  }
-  free(temp);
-  return result;
+    //check if the queue is empty
+    if(!queue->head)
+        return NULL;
+    list_t * result;
+    result = queue->head->solution;
+    node_t *temp = queue->head;
+    queue->head = queue->head->next;
+    if(!queue->head){
+        queue->tail = NULL;
+    }
+    free(temp);
+    return result;
 }
 
 /* Return the solution at the front of the queue */
 list_t* queue_front (const queue_t * queue){
-  return queue->head->solution;
+    return queue->head->solution;
 }
 
 #endif

@@ -1,7 +1,7 @@
 // Implement appropriate data structures to support efficient operations on sparse matrices.
 //
 // author: C. H. Chen
-// date: 2024/10/19
+// date: 2024/10/22
 
 #include <stdio.h>
 #include <stdlib.h>

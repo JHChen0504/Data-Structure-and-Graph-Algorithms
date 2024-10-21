@@ -40,11 +40,13 @@ bool queue_empty (const queue_t * queue){
 /* Insert a solution at the end of a queue */
 bool enqueue (queue_t * queue, list_t* path){
     node_t *newnode = (node_t*)malloc(sizeof(node_t));
+    list_t *solution = (list_t*)malloc(sizeof(list_t));
+    solution->position = path->position;
     if (newnode == NULL){
         fprintf(stderr, "Error: unable to allocate required memory\n");
         return false;
     }
-    newnode->solution = path;
+    newnode->solution = solution;
     newnode->next = NULL;
     if(queue_empty(queue)){
         queue->head = newnode;
@@ -60,8 +62,10 @@ list_t * dequeue (queue_t * queue){
     //check if the queue is empty
     if(!queue->head)
         return NULL;
-    list_t * result;
-    result = queue->head->solution;
+    list_t * result = (list_t*)malloc(sizeof(list_t));
+    result->position.col = queue->head->solution->position.col;
+    result->position.row = queue->head->solution->position.row;
+    result->next = NULL;
     node_t *temp = queue->head;
     queue->head = queue->head->next;
     if(!queue->head){

@@ -7,7 +7,7 @@
 
 typedef /* Various states a maze cell may be in */
 enum cell {OPEN, BLOCKED, VISITED, PATH, START, END}
-  cell_t;
+    cell_t;
 
 /* Maze structure with dimensions height x width. Maze cells are a height*width
    contiguous block of memory in row-major order (offset = width*row + col). */
@@ -174,9 +174,9 @@ void printMaze(const maze_t* maze)
         {
         case OPEN:    ch=' '; break;
         case BLOCKED: ch='X'; break;
-        case VISITED: ch=' '; break;
+        case VISITED: ch='.'; break;
         case START:   ch='S'; break;
-        case PATH:    ch='.'; break;
+        case PATH:    ch='+'; break;
         case END:     ch='T'; break;
         default:      ch='?'; break; /* Included in case someone changes cell_t */
         }

@@ -197,8 +197,11 @@ min_heap_t *scan_file(FILE *in) {
 
 int main(int argc, char *argv[])
 {
-    
-    FILE *in = fopen("C:\\Users\\user\\Documents\\test\\in.txt", "r");
+    if (argc != 2) {
+        printf("Usage: %s <input file>\n", argv[0]);
+        return -1;
+    }
+    FILE *in = fopen(argv[1], "r");
     FILE *out = fopen("out", "wb");
     int arr[ASCII_SIZE];
 

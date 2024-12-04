@@ -116,7 +116,7 @@ void decode(FILE *in, min_heap_t *heap) {
   unsigned char buffer;
   long filelen;
   FILE *out;
-  out = fopen("C:\\Users\\user\\Documents\\test\\out.txt","w+");
+  out = fopen("out.txt","w+");
   fseek(in, 0, SEEK_END); // Jump to the end of the file
   filelen = ftell(in);    // Get the current byte offset in the file
   rewind(in);             // Jump back to the beginning of the file
